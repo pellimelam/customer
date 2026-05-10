@@ -424,6 +424,41 @@ background:#000;
 color:white;
 }
 
+.share-wrap{
+margin-top:25px;
+text-align:center;
+}
+
+.share-image-btn{
+
+width:100%;
+
+padding:18px;
+
+border:none;
+
+border-radius:20px;
+
+font-size:1rem;
+
+font-weight:800;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+135deg,
+#ffd700,
+#ffb700
+);
+
+color:#000;
+
+box-shadow:
+0 10px 30px rgba(255,215,0,.25);
+
+}
+
 /* ===================================== */
 /* FOOTER */
 /* ===================================== */
@@ -727,4 +762,3 @@ font-size:1.8rem;
 }
 
 }
-
