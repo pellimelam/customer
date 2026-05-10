@@ -354,16 +354,7 @@ position:relative;
 overflow:hidden;
 }
 
-.receipt::before{
-content:'PELLIMELAM';
-position:absolute;
-font-size:6rem;
-font-weight:900;
-opacity:.03;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-}
+
 
 .receipt-header{
 text-align:center;
@@ -384,40 +375,7 @@ line-height:2.4;
 font-size:1rem;
 }
 
-.offer-box{
-margin-top:28px;
-padding:30px;
-border-radius:28px;
-background:#fff5cf;
-line-height:2.2;
-}
 
-.receipt-actions{
-display:flex;
-gap:18px;
-flex-wrap:wrap;
-margin-top:30px;
-}
-
-.action-btn{
-flex:1;
-min-width:220px;
-
-padding:20px;
-
-border:none;
-border-radius:22px;
-
-font-size:1rem;
-font-weight:700;
-
-cursor:pointer;
-}
-
-.whatsapp{
-background:#25D366;
-color:white;
-}
 
 .download{
 background:#000;
