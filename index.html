@@ -8,7 +8,61 @@
 
 <title>Pellimelam • Royal Wedding Experience</title>
 
-<meta name="theme-color" content="#050505">
+<meta name="title"
+content="Pellimelam • Royal Wedding Experience">
+
+<meta name="description"
+content="India's First & Largest Traditional Pellimelam Booking Platform. Experience divine wedding music, majestic traditions and unforgettable celebrations.">
+
+<meta name="theme-color"
+content="#050505">
+
+<!-- OPEN GRAPH -->
+
+<meta property="og:type"
+content="website">
+
+<meta property="og:url"
+content="https://pellimelam.vidhwaan.com/">
+
+<meta property="og:title"
+content="Pellimelam • Royal Wedding Experience">
+
+<meta property="og:description"
+content="India's First & Largest Traditional Pellimelam Booking Platform. Celebrate your wedding with divine traditional music and royal atmosphere.">
+
+<meta property="og:image"
+content="https://pellimelam.vidhwaan.com/icons/logo-512.png">
+
+<meta property="og:image:width"
+content="512">
+
+<meta property="og:image:height"
+content="512">
+
+<!-- TWITTER -->
+
+<meta name="twitter:card"
+content="summary_large_image">
+
+<meta name="twitter:title"
+content="Pellimelam • Royal Wedding Experience">
+
+<meta name="twitter:description"
+content="India's First & Largest Traditional Pellimelam Booking Platform.">
+
+<meta name="twitter:image"
+content="https://pellimelam.vidhwaan.com/icons/logo-512.png">
+
+<!-- ICONS -->
+
+<link rel="icon"
+type="image/png"
+sizes="194x194"
+href="/icons/logo-194.png">
+
+<link rel="apple-touch-icon"
+href="/icons/logo-512.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1074,17 +1128,24 @@ async function downloadReceipt(){
 
 const receipt=document.getElementById('receipt');
 
+const buttons=receipt.querySelector('.receipt-actions');
+
+buttons.style.display='none';
+
 const canvas=await html2canvas(receipt,{
 
-scale:2
+scale:2,
+backgroundColor:'#ffffff'
 
 });
+
+buttons.style.display='flex';
 
 const link=document.createElement('a');
 
 link.download='pellimelam-receipt.png';
 
-link.href=canvas.toDataURL();
+link.href=canvas.toDataURL('image/png');
 
 link.click();
 
