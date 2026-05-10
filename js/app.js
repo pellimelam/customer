@@ -141,7 +141,7 @@ payBtn.innerHTML='Proceed Secure Payment';
 
 resetBodyScroll();
 
-setTimeout(()=>{
+requestAnimationFrame(()=>{
 
 generateReceipt({
 
@@ -153,7 +153,7 @@ paymentId:response.razorpay_payment_id
 
 });
 
-},500);
+});
 
 },
 
@@ -211,11 +211,7 @@ alert('Payment failed or cancelled.');
 
 });
 
-setTimeout(()=>{
-
 rzp.open();
-
-},150);
 
 }catch(err){
 
@@ -271,111 +267,70 @@ behavior:'smooth'
 
 }
 
-/* ===================================== */
-/* WHATSAPP */
-/* ===================================== */
 
-function shareWhatsApp(){
-
-const d=window.latestReceipt;
-
-const text=`
-
-✨ Pellimelam Wedding Advance Receipt ✨
-
-👤 Name: ${d.name}
-
-📞 Mobile: ${d.mobile}
-
-💰 Advance Paid: ₹${d.amount}
-
-🆔 Payment ID: ${d.paymentId}
-
-🎁 Complimentary Benefits Included
-
-✅ Website + App For ₹1
-✅ 50% OFF Digital Services
-✅ Bhagavad Gita Premium Access
-
-🌐 pellimelam.vidhwaan.com
-
-`;
-
-window.open(
-
-`https://wa.me/?text=${encodeURIComponent(text)}`,
-
-'_blank'
-
-);
-
-}
-
-/* ===================================== */
-/* DOWNLOAD IMAGE */
-/* ===================================== */
-
-async function downloadReceipt(){
+async function shareReceiptImage(){
 
 try{
 
 const receipt=document.getElementById('receipt');
 
-const buttons=receipt.querySelector('.receipt-actions');
-
-buttons.style.display='none';
-
 const canvas=await html2canvas(receipt,{
 
-scale:1,
+scale:.8,
 
 useCORS:true,
 
 backgroundColor:'#ffffff',
 
-logging:false,
-
-allowTaint:false
+logging:false
 
 });
 
-buttons.style.display='flex';
+canvas.toBlob(async(blob)=>{
 
-canvas.toBlob(function(blob){
+const file=new File(
+
+[blob],
+
+'pellimelam-receipt.png',
+
+{type:'image/png'}
+
+);
+
+if(navigator.canShare && navigator.canShare({files:[file]})){
+
+await navigator.share({
+
+files:[file],
+
+title:'Pellimelam Receipt'
+
+});
+
+}else{
 
 const link=document.createElement('a');
 
-link.download='pellimelam-receipt.png';
-
 link.href=URL.createObjectURL(blob);
+
+link.download='pellimelam-receipt.png';
 
 link.click();
 
-setTimeout(()=>{
+}
 
-URL.revokeObjectURL(link.href);
-
-},1000);
-
-},'image/png');
+},'image/png',0.8);
 
 }catch(err){
 
-alert('Unable to download receipt on this device.');
-
-const buttons=document.querySelector('.receipt-actions');
-
-if(buttons){
-buttons.style.display='flex';
-}
+alert('Sharing not supported on this device.');
 
 }
 
 }
 
-/* ===================================== */
-/* CLOSE OUTSIDE */
-/* ===================================== */
+
 
 window.onclick=function(e){
 
@@ -388,4 +343,9 @@ closeModal();
 }
 
 }
+
+window.openModal=openModal;
+window.closeModal=closeModal;
+window.payNow=payNow;
+window.shareReceiptImage=shareReceiptImage;
 
