@@ -111,11 +111,7 @@ return;
 
 const payBtn=document.getElementById('payButton');
 
-payBtn.disabled=true;
 
-payBtn.style.opacity='.7';
-
-payBtn.innerHTML='Processing Payment...';
 
 const options={
 
@@ -213,6 +209,11 @@ alert('Payment failed or cancelled.');
 
 rzp.open();
 
+payBtn.disabled=true;
+
+payBtn.style.opacity='.7';
+
+payBtn.innerHTML='Processing Payment...';
 }catch(err){
 
 alert('Payment failed. Please try again.');
@@ -243,19 +244,101 @@ document.getElementById('receipt').style.display='block';
 
 document.getElementById('receiptContent').innerHTML=`
 
-<p><strong>Customer Name:</strong> ${data.name}</p>
+<div style="
+background:#fff8dc;
+padding:16px;
+border-radius:18px;
+line-height:1.6;
+font-size:14px;
+">
 
-<p><strong>Mobile Number:</strong> ${data.mobile}</p>
+<div style="
+text-align:center;
+margin-bottom:14px;
+">
 
-<p><strong>Wedding Address:</strong> ${data.address}</p>
+<div style="
+font-size:42px;
+line-height:1;
+margin-bottom:6px;
+">
+💛
+</div>
 
-<p><strong>Advance Paid:</strong> ₹${data.amount}</p>
+<h2 style="
+font-size:22px;
+font-family:Cinzel,serif;
+color:#111;
+margin-bottom:2px;
+">
+Payment Successful
+</h2>
 
-<p><strong>Payment ID:</strong> ${data.paymentId}</p>
+<p style="
+font-size:12px;
+opacity:.7;
+">
+Pellimelam Wedding Advance
+</p>
 
-<p><strong>Payment Date:</strong> ${new Date().toLocaleString()}</p>
+</div>
 
-<p><strong>Platform:</strong> pellimelam.vidhwaan.com</p>
+<div style="
+background:#fff;
+padding:14px;
+border-radius:14px;
+">
+
+<p style="margin-bottom:8px;">
+<strong>Name:</strong>
+${data.name}
+</p>
+
+<p style="margin-bottom:8px;">
+<strong>Mobile:</strong>
+${data.mobile}
+</p>
+
+<p style="
+margin-bottom:8px;
+word-break:break-word;
+">
+<strong>Address:</strong>
+${data.address}
+</p>
+
+<p style="margin-bottom:8px;">
+<strong>Amount:</strong>
+₹${data.amount}
+</p>
+
+<p>
+<strong>Payment ID:</strong>
+${data.paymentId}
+</p>
+
+</div>
+
+<button
+onclick="shareReceiptImage()"
+style="
+margin-top:14px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+font-size:14px;
+font-weight:800;
+background:linear-gradient(135deg,#ffd700,#ffb700);
+color:#000;
+cursor:pointer;
+">
+
+📤 Share Receipt
+
+</button>
+
+</div>
 
 `;
 
@@ -267,24 +350,35 @@ behavior:'smooth'
 
 }
 
-
 async function shareReceiptImage(){
 
 try{
 
 const receipt=document.getElementById('receipt');
 
+const button=receipt.querySelector('[onclick="shareReceiptImage()"]');
+
+if(button){
+button.style.display='none';
+}
+
 const canvas=await html2canvas(receipt,{
 
-scale:.8,
+scale:2,
 
 useCORS:true,
 
 backgroundColor:'#ffffff',
 
-logging:false
+logging:false,
+
+removeContainer:true
 
 });
+
+if(button){
+button.style.display='block';
+}
 
 canvas.toBlob(async(blob)=>{
 
@@ -298,7 +392,12 @@ const file=new File(
 
 );
 
-if(navigator.canShare && navigator.canShare({files:[file]})){
+if(
+
+navigator.canShare &&
+navigator.canShare({files:[file]})
+
+){
 
 await navigator.share({
 
@@ -318,13 +417,21 @@ link.download='pellimelam-receipt.png';
 
 link.click();
 
+setTimeout(()=>{
+
+URL.revokeObjectURL(link.href);
+
+},1000);
+
 }
 
-},'image/png',0.8);
+},'image/png',1);
 
 }catch(err){
 
 alert('Sharing not supported on this device.');
+
+console.log(err);
 
 }
 
