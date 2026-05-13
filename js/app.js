@@ -155,6 +155,8 @@ paymentId:response.razorpay_payment_id
 
 modal:{
 
+backdropclose:false,
+
 ondismiss:function(){
 
 payBtn.disabled=false;
@@ -207,13 +209,20 @@ alert('Payment failed or cancelled.');
 
 });
 
-rzp.open();
-
 payBtn.disabled=true;
 
 payBtn.style.opacity='.7';
 
-payBtn.innerHTML='Processing Payment...';
+payBtn.innerHTML='Opening Secure Payment...';
+
+document.activeElement.blur();
+
+requestAnimationFrame(()=>{
+
+rzp.open();
+
+});
+
 }catch(err){
 
 alert('Payment failed. Please try again.');
@@ -240,82 +249,156 @@ window.latestReceipt=data;
 
 closeModal();
 
+const shortAddress=
+
+data.address.length > 55
+
+? data.address.slice(0,55)+'...'
+
+: data.address;
+
 document.getElementById('receipt').style.display='block';
 
 document.getElementById('receiptContent').innerHTML=`
 
 <div style="
-background:#fff8dc;
-padding:16px;
+background:#fff;
+border:1px solid #eee;
 border-radius:18px;
-line-height:1.6;
-font-size:14px;
+padding:18px;
+font-family:Poppins,sans-serif;
 ">
 
 <div style="
-text-align:center;
+display:flex;
+align-items:center;
+justify-content:space-between;
 margin-bottom:14px;
 ">
 
+<div>
+
+<h2 style="
+font-size:18px;
+margin-bottom:2px;
+color:#111;
+font-family:Cinzel,serif;
+">
+Pellimelam
+</h2>
+
+<p style="
+font-size:11px;
+opacity:.6;
+">
+Wedding Advance Receipt
+</p>
+
+</div>
+
 <div style="
-font-size:42px;
-line-height:1;
-margin-bottom:6px;
+font-size:30px;
 ">
 💛
 </div>
 
-<h2 style="
-font-size:22px;
-font-family:Cinzel,serif;
-color:#111;
-margin-bottom:2px;
-">
-Payment Successful
-</h2>
+</div>
 
-<p style="
-font-size:12px;
-opacity:.7;
+<div style="
+background:#fafafa;
+border-radius:14px;
+padding:14px;
+font-size:13px;
+line-height:1.5;
 ">
-Pellimelam Wedding Advance
-</p>
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+gap:12px;
+">
+
+<span style="opacity:.6;">Name</span>
+
+<strong style="
+text-align:right;
+word-break:break-word;
+">
+${data.name}
+</strong>
 
 </div>
 
 <div style="
-background:#fff;
-padding:14px;
-border-radius:14px;
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+gap:12px;
 ">
 
-<p style="margin-bottom:8px;">
-<strong>Name:</strong>
-${data.name}
-</p>
+<span style="opacity:.6;">Mobile</span>
 
-<p style="margin-bottom:8px;">
-<strong>Mobile:</strong>
+<strong>
 ${data.mobile}
-</p>
+</strong>
 
-<p style="
-margin-bottom:8px;
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+gap:12px;
+align-items:flex-start;
+">
+
+<span style="opacity:.6;">Address</span>
+
+<strong style="
+max-width:190px;
+text-align:right;
 word-break:break-word;
 ">
-<strong>Address:</strong>
-${data.address}
-</p>
+${shortAddress}
+</strong>
 
-<p style="margin-bottom:8px;">
-<strong>Amount:</strong>
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+gap:12px;
+">
+
+<span style="opacity:.6;">Amount</span>
+
+<strong>
 ₹${data.amount}
-</p>
+</strong>
 
-<p>
-<strong>Payment ID:</strong>
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+gap:12px;
+align-items:flex-start;
+">
+
+<span style="opacity:.6;">Payment ID</span>
+
+<strong style="
+max-width:190px;
+text-align:right;
+word-break:break-word;
+font-size:11px;
+">
 ${data.paymentId}
-</p>
+</strong>
+
+</div>
 
 </div>
 
@@ -324,17 +407,17 @@ onclick="shareReceiptImage()"
 style="
 margin-top:14px;
 width:100%;
-padding:14px;
+padding:13px;
 border:none;
 border-radius:14px;
 font-size:14px;
-font-weight:800;
-background:linear-gradient(135deg,#ffd700,#ffb700);
-color:#000;
+font-weight:700;
+background:#111;
+color:#fff;
 cursor:pointer;
 ">
 
-📤 Share Receipt
+Share Receipt
 
 </button>
 
@@ -455,4 +538,3 @@ window.openModal=openModal;
 window.closeModal=closeModal;
 window.payNow=payNow;
 window.shareReceiptImage=shareReceiptImage;
-
