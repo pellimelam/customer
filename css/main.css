@@ -382,9 +382,9 @@ font-size:
 
 clamp(
 
-4rem,
+2.4rem,
 
-10vw,
+11vw,
 
 7rem
 
@@ -392,9 +392,13 @@ clamp(
 
 font-weight:900;
 
-line-height:1;
+line-height:1.1;
 
 margin-bottom:12px;
+
+max-width:100%;
+
+overflow:hidden;
 
 background:
 
@@ -425,7 +429,6 @@ text-shadow:
 rgba(255,215,0,.15);
 
 }
-
 
 
 .sub-brand{
@@ -1466,6 +1469,25 @@ margin-bottom:50px;
 }
 
 
+.hero{
+
+padding:70px 20px;
+
+}
+
+.hero-content{
+
+width:100%;
+
+}
+
+.hero-content h1{
+
+font-size:2.7rem;
+
+line-height:1.05;
+
+}
 
 .invitation-card{
 
@@ -2253,3 +2275,43 @@ padding:50px 15px;
 
 }
 
+
+@media(max-width:768px){
+
+.invitation-card{
+
+padding:45px 25px;
+
+border-radius:28px;
+
+}
+
+@media(max-width:768px){
+
+.hero{
+
+padding:70px 20px;
+
+}
+
+.hero-content{
+
+width:100%;
+
+}
+
+.hero-content h1{
+
+font-size:2.7rem;
+
+line-height:1.05;
+
+}
+
+.invitation-card{
+
+padding:45px 25px;
+
+border-radius:28px;
+
+}
