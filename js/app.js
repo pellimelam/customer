@@ -1,540 +1,1594 @@
 /* ===================================== */
-/* RAZORPAY KEY */
+/* PELLIMELAM FAMILY CELEBRATION STUDIO */
+/* APP.JS PART 1                         */
 /* ===================================== */
 
-const RAZORPAY_KEY = "rzp_live_SO4F7YCOOnRVRZ";
+
 
 /* ===================================== */
-/* MODAL */
+/* GLOBAL VARIABLES                      */
 /* ===================================== */
 
-function openModal(){
+let selectedTheme = "gold";
 
-const scrollY=window.scrollY;
-
-document.body.dataset.scrollY=scrollY;
-
-document.body.style.position='fixed';
-
-document.body.style.top=`-${scrollY}px`;
-
-document.body.style.left='0';
-
-document.body.style.right='0';
-
-document.body.style.width='100%';
-
-document.body.style.overflow='hidden';
-
-document.getElementById('modal').style.display='flex';
-
-}
+let uploadedPhoto = null;
 
 
-
-function closeModal(){
-
-const scrollY=document.body.dataset.scrollY || '0';
-
-document.body.style.position='';
-
-document.body.style.top='';
-
-document.body.style.left='';
-
-document.body.style.right='';
-
-document.body.style.width='';
-
-document.body.style.overflow='auto';
-
-window.scrollTo(0,parseInt(scrollY) || 0);
-
-document.getElementById('modal').style.display='none';
-
-}
-
-
-function resetBodyScroll(){
-
-document.body.style.position='';
-
-document.body.style.top='';
-
-document.body.style.left='';
-
-document.body.style.right='';
-
-document.body.style.width='';
-
-document.body.style.overflow='auto';
-
-}
 
 /* ===================================== */
-/* PAYMENT */
+/* DOM READY                             */
 /* ===================================== */
 
-function payNow(){
+document.addEventListener(
 
-const name=document.getElementById('name').value.trim();
+"DOMContentLoaded",
 
-const mobile=document.getElementById('mobile').value.trim();
+()=>{
 
-const address=document.getElementById('address').value.trim();
+initThemes();
 
-const amount=document.getElementById('amount').value.trim();
-
-if(!name || !mobile || !address || !amount){
-
-alert('Please fill all fields');
-
-return;
+initPhotoUpload();
 
 }
 
-if(!/^[6-9]\d{9}$/.test(mobile)){
-
-alert('Please enter valid mobile number');
-
-return;
-
-}
-
-if(parseInt(amount) < 1){
-
-alert('Please enter valid amount');
-
-return;
-
-}
-
-const payBtn=document.getElementById('payButton');
+);
 
 
 
-const options={
 
-key:RAZORPAY_KEY,
+/* ===================================== */
+/* SMOOTH SCROLL                         */
+/* ===================================== */
 
-amount:parseInt(amount)*100,
+function scrollToForm(){
 
-currency:'INR',
+document
 
-name:'Pellimelam',
+.getElementById("coupleForm")
 
-description:'Wedding Advance Payment',
+.scrollIntoView({
 
-image:'https://customer.vidhwaan.com/icons/icon-512.png',
+behavior:"smooth",
 
-handler:function(response){
-
-payBtn.disabled=false;
-
-payBtn.style.opacity='1';
-
-payBtn.innerHTML='Proceed Secure Payment';
-
-resetBodyScroll();
-
-requestAnimationFrame(()=>{
-
-generateReceipt({
-
-name,
-mobile,
-address,
-amount,
-paymentId:response.razorpay_payment_id
+block:"start"
 
 });
 
-});
+}
 
-},
 
-modal:{
 
-backdropclose:false,
 
-ondismiss:function(){
 
-payBtn.disabled=false;
+/* ===================================== */
+/* THEME SELECTION                       */
+/* ===================================== */
 
-payBtn.style.opacity='1';
+function initThemes(){
 
-payBtn.innerHTML='Proceed Secure Payment';
 
-resetBodyScroll();
+const cards =
+
+document.querySelectorAll(
+
+".theme-card"
+
+);
+
+
+
+cards.forEach(
+
+card=>{
+
+
+card.addEventListener(
+
+"click",
+
+()=>{
+
+
+cards.forEach(
+
+c=>c.classList.remove(
+
+"active"
+
+)
+
+);
+
+
+
+card.classList.add(
+
+"active"
+
+);
+
+
+
+selectedTheme=
+
+card.dataset.theme;
+
+
+
+applyTheme(
+
+selectedTheme
+
+);
+
 
 }
 
-},
+);
 
-prefill:{
-name:name,
-contact:mobile
-},
 
-readonly:{
-name:true,
-contact:true
-},
-
-notes:{
-address:address
-},
-
-theme:{
-color:'#D4AF37'
 }
+
+);
+
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* APPLY INVITATION THEME                */
+/* ===================================== */
+
+function applyTheme(theme){
+
+
+const card=
+
+document.getElementById(
+
+"invitationCard"
+
+);
+
+
+
+if(!card)return;
+
+
+
+switch(theme){
+
+
+case "gold":
+
+
+card.style.background=`
+
+linear-gradient(
+
+135deg,
+
+rgba(60,45,0,.88),
+
+rgba(20,20,20,.95)
+
+),
+
+url(
+
+'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070&auto=format&fit=crop'
+
+)
+
+`;
+
+break;
+
+
+
+
+case "temple":
+
+
+card.style.background=`
+
+linear-gradient(
+
+135deg,
+
+rgba(55,15,0,.82),
+
+rgba(10,10,10,.92)
+
+),
+
+url(
+
+'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop'
+
+)
+
+`;
+
+break;
+
+
+
+
+case "pink":
+
+
+card.style.background=`
+
+linear-gradient(
+
+135deg,
+
+rgba(140,60,90,.75),
+
+rgba(30,20,20,.90)
+
+),
+
+url(
+
+'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=2070&auto=format&fit=crop'
+
+)
+
+`;
+
+break;
+
+
+
+
+case "black":
+
+
+card.style.background=`
+
+linear-gradient(
+
+135deg,
+
+rgba(0,0,0,.92),
+
+rgba(40,40,40,.92)
+
+),
+
+url(
+
+'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2070&auto=format&fit=crop'
+
+)
+
+`;
+
+break;
+
+
+
+
+case "telugu":
+
+
+card.style.background=`
+
+linear-gradient(
+
+135deg,
+
+rgba(70,0,0,.82),
+
+rgba(30,0,0,.92)
+
+),
+
+url(
+
+'https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop'
+
+)
+
+`;
+
+break;
+
+
+}
+
+
+
+card.style.backgroundSize="cover";
+
+card.style.backgroundPosition="center";
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* PHOTO UPLOAD                          */
+/* ===================================== */
+
+function initPhotoUpload(){
+
+
+const photo=
+
+document.getElementById(
+
+"photo"
+
+);
+
+
+
+if(!photo)return;
+
+
+
+photo.addEventListener(
+
+"change",
+
+e=>{
+
+
+const file=
+
+e.target.files[0];
+
+
+
+if(!file)return;
+
+
+
+const reader=
+
+new FileReader();
+
+
+
+reader.onload=
+
+function(event){
+
+
+uploadedPhoto=
+
+event.target.result;
+
+
+
+showPhotoPreview(
+
+uploadedPhoto
+
+);
+
 
 };
 
-try{
 
-const rzp=new Razorpay(options);
 
-rzp.on('payment.failed',function(){
+reader.readAsDataURL(
 
-payBtn.disabled=false;
+file
 
-payBtn.style.opacity='1';
+);
 
-payBtn.innerHTML='Proceed Secure Payment';
-
-resetBodyScroll();
-
-alert('Payment failed or cancelled.');
-
-});
-
-payBtn.disabled=true;
-
-payBtn.style.opacity='.7';
-
-payBtn.innerHTML='Opening Secure Payment...';
-
-document.activeElement.blur();
-
-requestAnimationFrame(()=>{
-
-rzp.open();
-
-});
-
-}catch(err){
-
-alert('Payment failed. Please try again.');
-
-payBtn.disabled=false;
-
-payBtn.style.opacity='1';
-
-payBtn.innerHTML='Proceed Secure Payment';
-
-resetBodyScroll();
 
 }
 
+);
+
+
 }
 
+
+
+
+
 /* ===================================== */
-/* RECEIPT */
+/* SHOW PHOTO ON CARD                    */
 /* ===================================== */
 
-function generateReceipt(data){
+function showPhotoPreview(src){
 
-window.latestReceipt=data;
 
-closeModal();
+let img=
 
-const shortAddress=
+document.getElementById(
 
-data.address.length > 55
+"couplePreview"
 
-? data.address.slice(0,55)+'...'
+);
 
-: data.address;
 
-document.getElementById('receipt').style.display='block';
 
-document.getElementById('receiptContent').innerHTML=`
+if(!img){
 
-<div style="
-background:#fff;
-border:1px solid #eee;
-border-radius:18px;
-padding:18px;
-font-family:Poppins,sans-serif;
-">
 
-<div style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:14px;
-">
+img=
 
-<div>
+document.createElement(
 
-<h2 style="
-font-size:18px;
-margin-bottom:2px;
-color:#111;
-font-family:Cinzel,serif;
-">
-Pellimelam
-</h2>
+"img"
 
-<p style="
-font-size:11px;
-opacity:.6;
-">
-Wedding Advance Receipt
+);
+
+
+
+img.id=
+
+"couplePreview";
+
+
+
+img.style.width=
+
+"150px";
+
+
+
+img.style.height=
+
+"150px";
+
+
+
+img.style.objectFit=
+
+"cover";
+
+
+
+img.style.borderRadius=
+
+"50%";
+
+
+
+img.style.margin=
+
+"0 auto 30px";
+
+
+
+img.style.display=
+
+"block";
+
+
+
+img.style.border=
+
+"4px solid #ffd700";
+
+
+
+img.style.boxShadow=
+
+"0 15px 40px rgba(255,215,0,.25)";
+
+
+
+document
+
+.querySelector(
+
+".card-inner"
+
+)
+
+.prepend(
+
+img
+
+);
+
+
+}
+
+
+
+img.src=src;
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* GENERATE INVITATION                   */
+/* ===================================== */
+
+function generateInvitation(){
+
+
+const bride=
+
+document
+
+.getElementById(
+
+"bride"
+
+)
+
+.value
+
+.trim();
+
+
+
+const groom=
+
+document
+
+.getElementById(
+
+"groom"
+
+)
+
+.value
+
+.trim();
+
+
+
+const event=
+
+document
+
+.getElementById(
+
+"event"
+
+)
+
+.value;
+
+
+
+const date=
+
+document
+
+.getElementById(
+
+"date"
+
+)
+
+.value;
+
+
+
+const time=
+
+document
+
+.getElementById(
+
+"time"
+
+)
+
+.value;
+
+
+
+const venue=
+
+document
+
+.getElementById(
+
+"venue"
+
+)
+
+.value
+
+.trim();
+
+
+
+const city=
+
+document
+
+.getElementById(
+
+"city"
+
+)
+
+.value
+
+.trim();
+
+
+
+const quote=
+
+document
+
+.getElementById(
+
+"quote"
+
+)
+
+.value
+
+.trim();
+
+
+
+
+if(
+
+!bride ||
+
+!groom ||
+
+!date ||
+
+!venue
+
+){
+
+alert(
+
+"Please fill all required fields."
+
+);
+
+return;
+
+}
+
+
+
+
+document
+
+.getElementById(
+
+"previewBride"
+
+)
+
+innerText=bride;
+
+
+
+document
+
+.getElementById(
+
+"previewGroom"
+
+)
+
+innerText=groom;
+
+
+
+document
+
+.getElementById(
+
+"previewEvent"
+
+)
+
+innerText=event;
+
+
+
+document
+
+.getElementById(
+
+"previewDate"
+
+)
+
+innerText=
+
+formatDate(
+
+date
+
+);
+
+
+
+document
+
+.getElementById(
+
+"previewTime"
+
+)
+
+.innerText=
+
+time;
+
+
+
+document
+
+.getElementById(
+
+"previewVenue"
+
+)
+
+.innerText=
+
+venue+
+
+", "+
+
+city;
+
+
+
+
+
+if(
+
+quote!==''
+
+){
+
+document
+
+.querySelector(
+
+".invitation-message"
+
+)
+
+.innerText=
+
+quote;
+
+}
+
+
+
+applyTheme(
+
+selectedTheme
+
+);
+
+
+
+
+
+const card=
+
+document
+
+.getElementById(
+
+"invitationCard"
+
+);
+
+
+
+card.animate(
+
+[
+
+{
+
+opacity:0,
+
+transform:
+
+"translateY(40px)"
+
+},
+
+{
+
+opacity:1,
+
+transform:
+
+"translateY(0)"
+
+}
+
+],
+
+{
+
+duration:800,
+
+easing:
+
+"ease"
+
+}
+
+);
+
+
+
+
+card.scrollIntoView({
+
+behavior:
+
+"smooth"
+
+});
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* DATE FORMAT                           */
+/* ===================================== */
+
+function formatDate(dateString){
+
+
+const date=
+
+new Date(
+
+dateString
+
+);
+
+
+
+return date.toLocaleDateString(
+
+'en-IN',
+
+{
+
+day:'numeric',
+
+month:'long',
+
+year:'numeric'
+
+}
+
+);
+
+
+}
+
+
+/* ===================================== */
+/* APP.JS PART 2                         */
+/* ===================================== */
+
+
+
+/* ===================================== */
+/* DIVINE BLESSINGS                      */
+/* ===================================== */
+
+const blessings=[
+
+`May your marriage be blessed with endless love,
+prosperity and divine grace.
+
+May every sunrise bring joy into your home
+and every moment become a cherished memory.
+
+✨ Wishing You A Lifetime Filled With Happiness ✨`,
+
+
+
+`May Lord Venkateswara bless your beautiful journey.
+
+May love, health and prosperity follow you always.
+
+May your family be filled with joy forever.
+
+💛 Stay Blessed Forever 💛`,
+
+
+
+`Together may you laugh,
+
+Together may you dream,
+
+Together may you build
+
+a beautiful life full of happiness.
+
+✨ Congratulations ✨`,
+
+
+
+`May your love grow stronger
+
+with every passing day.
+
+May peace, prosperity and happiness
+
+always stay with you.
+
+❤️ Best Wishes ❤️`
+
+];
+
+
+
+function generateBlessing(){
+
+
+const bride=
+
+document
+
+.getElementById(
+
+"previewBride"
+
+)
+
+.innerText;
+
+
+
+const groom=
+
+document
+
+.getElementById(
+
+"previewGroom"
+
+)
+
+.innerText;
+
+
+
+const card=
+
+document
+
+.getElementById(
+
+"blessingCard"
+
+);
+
+
+
+const random=
+
+blessings[
+
+Math.floor(
+
+Math.random()
+
+*
+
+blessings.length
+
+)
+
+];
+
+
+
+card.innerHTML=`
+
+<p>
+
+${bride} & ${groom},
+
 </p>
 
-</div>
+<p>
 
-<div style="
-font-size:30px;
-">
-💛
-</div>
+${random.replace(/\n/g,"<br>")}
 
-</div>
+</p>
 
-<div style="
-background:#fafafa;
-border-radius:14px;
-padding:14px;
-font-size:13px;
-line-height:1.5;
-">
+<div class="blessing-footer">
 
-<div style="
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-gap:12px;
-">
-
-<span style="opacity:.6;">Name</span>
-
-<strong style="
-text-align:right;
-word-break:break-word;
-">
-${data.name}
-</strong>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-gap:12px;
-">
-
-<span style="opacity:.6;">Mobile</span>
-
-<strong>
-${data.mobile}
-</strong>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-gap:12px;
-align-items:flex-start;
-">
-
-<span style="opacity:.6;">Address</span>
-
-<strong style="
-max-width:190px;
-text-align:right;
-word-break:break-word;
-">
-${shortAddress}
-</strong>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-gap:12px;
-">
-
-<span style="opacity:.6;">Amount</span>
-
-<strong>
-₹${data.amount}
-</strong>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-gap:12px;
-align-items:flex-start;
-">
-
-<span style="opacity:.6;">Payment ID</span>
-
-<strong style="
-max-width:190px;
-text-align:right;
-word-break:break-word;
-font-size:11px;
-">
-${data.paymentId}
-</strong>
-
-</div>
-
-</div>
-
-<button
-onclick="shareReceiptImage()"
-style="
-margin-top:14px;
-width:100%;
-padding:13px;
-border:none;
-border-radius:14px;
-font-size:14px;
-font-weight:700;
-background:#111;
-color:#fff;
-cursor:pointer;
-">
-
-Share Receipt
-
-</button>
+Pellimelam by Vidhwaan
 
 </div>
 
 `;
 
-document.getElementById('receipt').scrollIntoView({
 
-behavior:'smooth'
 
-});
+card.animate(
+
+[
+
+{
+
+opacity:0,
+
+transform:
+
+"translateY(40px)"
+
+},
+
+{
+
+opacity:1,
+
+transform:
+
+"translateY(0)"
 
 }
 
-async function shareReceiptImage(){
+],
 
-try{
+{
 
-const receipt=document.getElementById('receipt');
+duration:700
 
-const button=receipt.querySelector('[onclick="shareReceiptImage()"]');
-
-if(button){
-button.style.display='none';
 }
-
-const canvas=await html2canvas(receipt,{
-
-scale:2,
-
-useCORS:true,
-
-backgroundColor:'#ffffff',
-
-logging:false,
-
-removeContainer:true
-
-});
-
-if(button){
-button.style.display='block';
-}
-
-canvas.toBlob(async(blob)=>{
-
-const file=new File(
-
-[blob],
-
-'pellimelam-receipt.png',
-
-{type:'image/png'}
 
 );
 
-if(
 
-navigator.canShare &&
-navigator.canShare({files:[file]})
+}
 
-){
 
-await navigator.share({
 
-files:[file],
 
-title:'Pellimelam Receipt'
 
-});
+/* ===================================== */
+/* DOWNLOAD INVITATION                   */
+/* ===================================== */
 
-}else{
+async function downloadInvitation(){
 
-const link=document.createElement('a');
 
-link.href=URL.createObjectURL(blob);
 
-link.download='pellimelam-receipt.png';
+const card=
+
+document.getElementById(
+
+"invitationCard"
+
+);
+
+
+
+if(typeof html2canvas==="undefined"){
+
+alert(
+
+"Please include html2canvas library."
+
+);
+
+return;
+
+}
+
+
+
+showToast(
+
+"Preparing HD Invitation..."
+
+);
+
+
+
+const canvas=
+
+await html2canvas(
+
+card,
+
+{
+
+scale:3,
+
+useCORS:true,
+
+backgroundColor:null
+
+}
+
+);
+
+
+
+const link=
+
+document.createElement(
+
+"a"
+
+);
+
+
+
+const bride=
+
+document
+
+.getElementById(
+
+"previewBride"
+
+)
+
+.innerText;
+
+
+
+const groom=
+
+document
+
+.getElementById(
+
+"previewGroom"
+
+)
+
+.innerText;
+
+
+
+const event=
+
+document
+
+.getElementById(
+
+"previewEvent"
+
+)
+
+.innerText;
+
+
+
+link.download=
+
+`${bride}-${groom}-${event}.png`;
+
+
+
+link.href=
+
+canvas.toDataURL(
+
+"image/png"
+
+);
+
+
 
 link.click();
 
-setTimeout(()=>{
 
-URL.revokeObjectURL(link.href);
 
-},1000);
+showToast(
 
-}
+"Invitation Downloaded"
 
-},'image/png',1);
+);
 
-}catch(err){
-
-alert('Sharing not supported on this device.');
-
-console.log(err);
-
-}
 
 }
 
 
 
-window.onclick=function(e){
 
-const modal=document.getElementById('modal');
 
-if(e.target===modal){
+/* ===================================== */
+/* WHATSAPP SHARE                        */
+/* ===================================== */
 
-closeModal();
+function shareWhatsapp(){
+
+
+
+const bride=
+
+document
+
+.getElementById(
+
+"previewBride"
+
+)
+
+.innerText;
+
+
+
+const groom=
+
+document
+
+.getElementById(
+
+"previewGroom"
+
+)
+
+.innerText;
+
+
+
+const event=
+
+document
+
+.getElementById(
+
+"previewEvent"
+
+)
+
+.innerText;
+
+
+
+const date=
+
+document
+
+.getElementById(
+
+"previewDate"
+
+)
+
+.innerText;
+
+
+
+const time=
+
+document
+
+.getElementById(
+
+"previewTime"
+
+)
+
+.innerText;
+
+
+
+const venue=
+
+document
+
+.getElementById(
+
+"previewVenue"
+
+)
+
+.innerText;
+
+
+
+const text=
+
+`✨ Wedding Invitation ✨
+
+${bride} ❤️ ${groom}
+
+${event}
+
+📅 ${date}
+
+🕒 ${time}
+
+📍 ${venue}
+
+Bless Us With Your Presence
+
+🎶 Pellimelam by Vidhwaan
+
+🌐 https://pellimelam.vidhwaan.com
+
+💬 9440246101`;
+
+
+
+window.open(
+
+`https://wa.me/?text=${encodeURIComponent(text)}`,
+
+"_blank"
+
+);
+
 
 }
 
+
+
+
+
+/* ===================================== */
+/* INSTAGRAM HELPER                      */
+/* ===================================== */
+
+function shareInstagram(){
+
+
+
+alert(
+
+`Instagram doesn't allow direct sharing from websites.
+
+1. Download Invitation
+
+2. Open Instagram
+
+3. Add Story
+
+4. Select Downloaded Image`
+
+);
+
+
+
 }
 
-window.openModal=openModal;
-window.closeModal=closeModal;
-window.payNow=payNow;
-window.shareReceiptImage=shareReceiptImage;
+
+
+
+
+/* ===================================== */
+/* COPY LINK                             */
+/* ===================================== */
+
+function copyLink(){
+
+
+
+navigator
+
+.clipboard
+
+.writeText(
+
+"https://pellimelam.vidhwaan.com"
+
+);
+
+
+
+showToast(
+
+"Website Link Copied"
+
+);
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* TOAST                                 */
+/* ===================================== */
+
+function showToast(message){
+
+
+
+let toast=
+
+document.getElementById(
+
+"toast"
+
+);
+
+
+
+if(!toast){
+
+
+
+toast=
+
+document.createElement(
+
+"div"
+
+);
+
+
+
+toast.id=
+
+"toast";
+
+
+
+toast.style.position=
+
+"fixed";
+
+
+
+toast.style.bottom=
+
+"110px";
+
+
+
+toast.style.left=
+
+"50%";
+
+
+
+toast.style.transform=
+
+"translateX(-50%)";
+
+
+
+toast.style.padding=
+
+"16px 26px";
+
+
+
+toast.style.background=
+
+"rgba(0,0,0,.88)";
+
+
+
+toast.style.border=
+
+"1px solid rgba(255,215,0,.35)";
+
+
+
+toast.style.borderRadius=
+
+"100px";
+
+
+
+toast.style.color=
+
+"#fff";
+
+
+
+toast.style.fontWeight=
+
+"700";
+
+
+
+toast.style.zIndex=
+
+"999999";
+
+
+
+toast.style.backdropFilter=
+
+"blur(15px)";
+
+
+
+document.body.appendChild(
+
+toast
+
+);
+
+
+}
+
+
+
+toast.innerText=
+
+message;
+
+
+
+toast.style.opacity=
+
+"1";
+
+
+
+setTimeout(
+
+()=>{
+
+toast.style.opacity=
+
+"0";
+
+},
+
+2500
+
+);
+
+
+}
+
+
+
+
+
+/* ===================================== */
+/* INITIAL THEME                         */
+/* ===================================== */
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+applyTheme(
+
+"gold"
+
+);
+
+
+}
+
+);
+
+
