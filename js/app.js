@@ -675,7 +675,7 @@ document
 
 )
 
-innerText=bride;
+.innerText=bride;
 
 
 
@@ -687,7 +687,7 @@ document
 
 )
 
-innerText=groom;
+.innerText=groom;
 
 
 
@@ -699,7 +699,7 @@ document
 
 )
 
-innerText=event;
+.innerText=event;
 
 
 
@@ -711,7 +711,7 @@ document
 
 )
 
-innerText=
+.innerText=
 
 formatDate(
 
@@ -1590,5 +1590,4 @@ applyTheme(
 }
 
 );
-
 
